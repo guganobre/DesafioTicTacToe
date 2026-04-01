@@ -96,6 +96,56 @@ docker compose down -v
 
 ---
 
+## 🐛 Executando em Modo Debug (sem Docker)
+
+Para desenvolvimento local, é necessário ter o PostgreSQL disponível. A forma mais prática é subir **apenas o banco** via Docker e rodar a API e o frontend direto na máquina.
+
+### Pré-requisitos
+
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9)
+- [Node.js 22+](https://nodejs.org/)
+- Docker (apenas para o banco de dados)
+
+### 1. Subir somente o banco de dados
+
+```bash
+docker compose up postgres -d
+```
+
+### 2. Executar a API
+
+**Via terminal:**
+```bash
+cd backend
+dotnet run --project TicTacToe.API
+```
+
+**Via Visual Studio:**
+
+Abra `backend/TicTacToe.sln`, selecione o perfil `http` e pressione `F5`.
+
+A API estará disponível em:
+
+| Serviço | URL |
+|---|---|
+| API (HTTP) | http://localhost:5203 |
+| API (HTTPS) | https://localhost:7170 |
+| Documentação Scalar | http://localhost:5203/scalar/v1 |
+
+### 3. Executar o Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+O frontend estará disponível em **http://localhost:5173**.
+
+> O Vite já está configurado com proxy: requisições para `/api` são redirecionadas automaticamente para `http://localhost:5203`, sem necessidade de alterar nenhuma configuração.
+
+---
+
 ## 📡 Endpoints da API
 
 | Método | Rota | Descrição |
