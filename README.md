@@ -98,7 +98,12 @@ docker compose down -v
 
 ## 🐛 Executando em Modo Debug (sem Docker)
 
-Para desenvolvimento local, é necessário ter o PostgreSQL disponível. A forma mais prática é subir **apenas o banco** via Docker e rodar a API e o frontend direto na máquina.
+Para desenvolvimento local com hot reload e depuração, cada serviço pode ser executado individualmente. Consulte o README específico de cada projeto para instruções detalhadas:
+
+- 📄 **[backend/README.md](./backend/README.md)** — dependências, connection string, comandos e migrações do EF Core
+- 📄 **[frontend/README.md](./frontend/README.md)** — dependências, configuração do proxy Vite e comandos de desenvolvimento
+
+A forma mais prática é subir **apenas o banco** via Docker e rodar a API e o frontend direto na máquina.
 
 ### Pré-requisitos
 
