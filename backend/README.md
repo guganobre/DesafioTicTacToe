@@ -117,29 +117,51 @@ Ajuste os valores de `Password` (e demais campos) conforme a sua instalação lo
 ### Pré-requisitos
 
 - [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9)
-- PostgreSQL rodando localmente **ou** via Docker (somente o banco):
+- Instância PostgreSQL acessível (local ou remota)
 
-```bash
-# Somente o banco de dados
-docker compose up postgres -d
-```
+### 1. Apontar para o banco de dados
 
-### 1. Restaurar dependências
-
-```bash
-cd backend
-dotnet restore
-```
-
-### 2. Ajustar a connection string *(se necessário)*
-
-Edite `TicTacToe.API/appsettings.Development.json` com as credenciais do seu PostgreSQL local:
+Edite `TicTacToe.API/appsettings.Development.json` com os dados da sua instância PostgreSQL:
 
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Host=localhost;Port=5432;Database=tictactoe;Username=postgres;Password=<sua-senha>"
+  "DefaultConnection": "Host=<host>;Port=<porta>;Database=<banco>;Username=<usuario>;Password=<senha>"
 }
 ```
+
+| Parâmetro | Descrição | Exemplo |
+|---|---|---|
+| `Host` | Endereço do servidor PostgreSQL | `localhost` ou `192.168.1.10` |
+| `Port` | Porta do PostgreSQL | `5432` |
+| `Database` | Nome do banco de dados | `tictactoe` |
+| `Username` | Usuário do PostgreSQL | `postgres` |
+| `Password` | Senha do usuário | `senha123` |
+
+> O banco de dados será criado automaticamente pelas migrações se ainda não existir.
+
+### 2. Aplicar as migrações
+
+Antes de rodar a API pela primeira vez, aplique as migrações para criar as tabelas:
+
+```bash
+cd backend
+dotnet ef database update --project TicTacToe.Infrastructure --startup-project TicTacToe.API
+```
+
+> As migrações também são aplicadas automaticamente ao iniciar a API via `dotnet run` ou `F5`.
+
+### 3. Restaurar dependências e executar a API
+
+**Via terminal:**
+```bash
+cd backend
+dotnet restore
+dotnet run --project TicTacToe.API
+```
+
+**Via Visual Studio:**
+
+Abra `TicTacToe.sln`, selecione o perfil `http` e pressione `F5`.
 
 ### 3. Executar a API
 
@@ -148,10 +170,6 @@ Edite `TicTacToe.API/appsettings.Development.json` com as credenciais do seu Pos
 dotnet run --project TicTacToe.API
 ```
 
-**Via Visual Studio:**
-
-Abra `TicTacToe.sln`, selecione o perfil `http` e pressione `F5`.
-
 > As migrações do banco de dados são aplicadas automaticamente na inicialização.
 
 ### 4. Acessar
@@ -159,7 +177,6 @@ Abra `TicTacToe.sln`, selecione o perfil `http` e pressione `F5`.
 | Serviço | URL |
 |---|---|
 | API (HTTP) | http://localhost:5203 |
-| API (HTTPS) | https://localhost:7170 |
 | Documentação Scalar | http://localhost:5203/scalar/v1 |
 
 ---

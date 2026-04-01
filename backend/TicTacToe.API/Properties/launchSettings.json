@@ -5,20 +5,11 @@
       "launchBrowser": true,
       "launchUrl": "scalar/v1",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__DefaultConnection": "Host=localhost;Port=5432;Database=tictactoe;Username=postgres;Password=senha123"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5203"
-    },
-    "https": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "scalar/v1",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7170"
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json"

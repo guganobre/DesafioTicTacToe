@@ -161,3 +161,80 @@ O frontend estará disponível em **http://localhost:5173**.
 | `GET` | `/api/matches` | Retorna o histórico de todas as partidas |
 
 A documentação interativa completa está disponível em `/scalar/v1` quando a API está em execução.
+
+---
+
+## 🧪 Testes
+
+O projeto conta com uma suíte de testes unitários que cobre **100% das linhas** da camada `TicTacToe.Application`.
+
+### Ferramentas
+
+| Ferramenta | Versão | Uso |
+|---|---|---|
+| [xUnit](https://xunit.net/) | 2.9.3 | Framework de testes |
+| [Moq](https://github.com/moq/moq4) | 4.20.72 | Mocking de dependências |
+| [coverlet](https://github.com/coverlet-coverage/coverlet) | 6.0.4 | Coleta de cobertura de código |
+| [ReportGenerator](https://reportgenerator.io/) | 5.x | Geração de relatório HTML |
+
+### Estrutura dos Testes
+
+```
+TicTacToe.Tests/
+├── Services/
+│   ├── GameServiceTests.cs             # 22 testes — CheckWinner (todas as combinações, empate, em andamento)
+│   └── MatchServiceTests.cs            # 17 testes — Create, Finish, AddMove, CreateMove
+└── UseCases/
+    ├── CreateMatchHandlerTests.cs      #  4 testes
+    ├── RegisterMoveHandlerTests.cs     #  4 testes
+    ├── FinishMatchHandlerTests.cs      #  6 testes
+    ├── GetLastMatchHandlerTests.cs     #  5 testes
+    └── GetMatchHistoryHandlerTests.cs  #  6 testes
+```
+
+**Total: 64 testes — ✅ 64 aprovados, 0 com falha**
+
+Cada classe de teste cobre:
+- **Caminho feliz** — comportamento esperado com entradas válidas
+- **Casos de erro** — exceções de domínio (`DomainException`, `ArgumentException`, etc.)
+- **Propagação de `CancellationToken`** — verificação de que o token é repassado a todos os repositórios
+- **Verificação de colaboração** — uso de `Verify` do Moq para confirmar chamadas às dependências
+
+### Executar os Testes
+
+```bash
+cd backend
+dotnet test TicTacToe.Tests
+```
+
+### Executar com Cobertura de Código
+
+```bash
+cd backend
+dotnet test TicTacToe.Tests --collect:"XPlat Code Coverage" --settings TicTacToe.Tests/coverlet.runsettings
+```
+
+Para gerar o relatório HTML (requer [ReportGenerator](https://reportgenerator.io/)):
+
+```bash
+dotnet tool install -g dotnet-reportgenerator-globaltool
+reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+```
+
+Abra `backend/coveragereport/index.html` no navegador para visualizar o relatório completo.
+
+### Resultado da Cobertura
+
+| Camada | Cobertura de Linhas |
+|---|---|
+| `TicTacToe.Application` | **100%** |
+
+### Arquivos Excluídos da Análise
+
+Configurados em `TicTacToe.Tests/coverlet.runsettings`:
+
+| Padrão | Motivo |
+|---|---|
+| `**/Migrations/**/*.cs` | Código gerado automaticamente pelo EF Core |
+| `**/Program.cs` | Entry point — sem lógica de negócio testável |
+| `**/DependencyInjection.cs` | Registro de serviços — sem lógica de negócio |
