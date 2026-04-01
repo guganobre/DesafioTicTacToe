@@ -45,6 +45,11 @@ backend/
 | Docker Compose | Orquestração dos containers |
 | PostgreSQL 17 Alpine | Banco de dados relacional |
 
+### Ferramentas de Desenvolvimento
+| Ferramenta | Descrição |
+|---|---|
+| Visual Studio 2026 | IDE principal para desenvolvimento do backend (requer VS 2022+) |
+
 ---
 
 ## 🚀 Como Executar com Docker
@@ -58,7 +63,7 @@ backend/
 
 1. **Clone o repositório:**
    ```bash
-   git clone <url-do-repositorio>
+   git clone https://github.com/guganobre/DesafioTicTacToe
    cd DesafioTicTacToe
    ```
 
