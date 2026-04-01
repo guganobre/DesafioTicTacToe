@@ -1,11 +1,13 @@
 namespace TicTacToe.Application.UseCases.GetMatchHistory;
 
+using MediatR;
 using TicTacToe.Application.DTOs;
 using TicTacToe.Domain.Interfaces.Repositories;
 
 public class GetMatchHistoryHandler(IMatchRepository matchRepository, IMoveRepository moveRepository)
+    : IRequestHandler<GetMatchHistoryQuery, IEnumerable<MatchDto>>
 {
-    public async Task<IEnumerable<MatchDto>> HandleAsync(CancellationToken ct = default)
+    public async Task<IEnumerable<MatchDto>> Handle(GetMatchHistoryQuery query, CancellationToken ct)
     {
         var matches = await matchRepository.GetAllAsync(ct);
         var result = new List<MatchDto>();

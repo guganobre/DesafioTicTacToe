@@ -35,7 +35,7 @@ public class CreateMatchHandlerTests
             .Setup(s => s.Create(command.Player1Name, command.Player2Name))
             .Returns(match);
 
-        var result = await _sut.HandleAsync(command);
+        var result = await _sut.Handle(command, default);
 
         Assert.Equal(match.Id, result.Id);
         Assert.Equal("Alice", result.Player1Name);
@@ -55,7 +55,7 @@ public class CreateMatchHandlerTests
 
         _matchServiceMock.Setup(s => s.Create("Alice", "Bob")).Returns(match);
 
-        await _sut.HandleAsync(command);
+        await _sut.Handle(command, default);
 
         _matchServiceMock.Verify(s => s.Create("Alice", "Bob"), Times.Once);
     }
@@ -69,7 +69,7 @@ public class CreateMatchHandlerTests
 
         _matchServiceMock.Setup(s => s.Create("Alice", "Bob")).Returns(match);
 
-        await _sut.HandleAsync(command, cts.Token);
+        await _sut.Handle(command, cts.Token);
 
         _matchRepositoryMock.Verify(r => r.AddAsync(match, cts.Token), Times.Once);
     }
@@ -83,6 +83,6 @@ public class CreateMatchHandlerTests
             .Setup(s => s.Create(command.Player1Name, command.Player2Name))
             .Throws<ArgumentException>();
 
-        await Assert.ThrowsAsync<ArgumentException>(() => _sut.HandleAsync(command));
+        await Assert.ThrowsAsync<ArgumentException>(() => _sut.Handle(command, default));
     }
 }

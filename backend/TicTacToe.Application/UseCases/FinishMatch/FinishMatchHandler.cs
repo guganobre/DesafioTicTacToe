@@ -1,5 +1,6 @@
 namespace TicTacToe.Application.UseCases.FinishMatch;
 
+using MediatR;
 using TicTacToe.Application.DTOs;
 using TicTacToe.Domain.Enums;
 using TicTacToe.Domain.Exceptions;
@@ -10,8 +11,9 @@ public class FinishMatchHandler(
     IMatchRepository matchRepository,
     IGameService gameService,
     IMatchService matchService)
+    : IRequestHandler<FinishMatchCommand, MatchDto>
 {
-    public async Task<MatchDto> HandleAsync(FinishMatchCommand command, CancellationToken ct = default)
+    public async Task<MatchDto> Handle(FinishMatchCommand command, CancellationToken ct)
     {
         var match = await matchRepository.GetByIdAsync(command.MatchId, ct)
             ?? throw new DomainException($"Partida {command.MatchId} não encontrada.");

@@ -31,7 +31,7 @@ public class FinishMatchHandlerTests
 
         _matchRepositoryMock.Setup(r => r.GetByIdAsync(matchId, default)).ReturnsAsync((Match?)null);
 
-        await Assert.ThrowsAsync<DomainException>(() => _sut.HandleAsync(command));
+        await Assert.ThrowsAsync<DomainException>(() => _sut.Handle(command, default));
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public class FinishMatchHandlerTests
         _matchRepositoryMock.Setup(r => r.GetByIdAsync(matchId, default)).ReturnsAsync(match);
         _gameServiceMock.Setup(s => s.CheckWinner(board)).Returns(GameResult.InProgress);
 
-        await Assert.ThrowsAsync<DomainException>(() => _sut.HandleAsync(command));
+        await Assert.ThrowsAsync<DomainException>(() => _sut.Handle(command, default));
 
         _matchRepositoryMock.Verify(r => r.UpdateAsync(It.IsAny<Match>(), default), Times.Never);
     }
@@ -64,7 +64,7 @@ public class FinishMatchHandlerTests
             .Setup(s => s.Finish(match, GameResult.WinnerX, "Alice"))
             .Callback((Match m, GameResult r, string? w) => { m.Result = r; m.Winner = w; });
 
-        var result = await _sut.HandleAsync(command);
+        var result = await _sut.Handle(command, default);
 
         Assert.Equal(match.Id, result.Id);
         Assert.Equal(GameResult.WinnerX, result.Result);
@@ -87,7 +87,7 @@ public class FinishMatchHandlerTests
             .Setup(s => s.Finish(match, GameResult.WinnerO, "Bob"))
             .Callback((Match m, GameResult r, string? w) => { m.Result = r; m.Winner = w; });
 
-        var result = await _sut.HandleAsync(command);
+        var result = await _sut.Handle(command, default);
 
         Assert.Equal(match.Id, result.Id);
         Assert.Equal(GameResult.WinnerO, result.Result);
@@ -110,7 +110,7 @@ public class FinishMatchHandlerTests
             .Setup(s => s.Finish(match, GameResult.Draw, null))
             .Callback((Match m, GameResult r, string? w) => { m.Result = r; m.Winner = w; });
 
-        var result = await _sut.HandleAsync(command);
+        var result = await _sut.Handle(command, default);
 
         Assert.Equal(GameResult.Draw, result.Result);
         Assert.Null(result.Winner);
@@ -130,7 +130,7 @@ public class FinishMatchHandlerTests
         _matchRepositoryMock.Setup(r => r.GetByIdAsync(matchId, cts.Token)).ReturnsAsync(match);
         _gameServiceMock.Setup(s => s.CheckWinner(board)).Returns(GameResult.WinnerX);
 
-        await _sut.HandleAsync(command, cts.Token);
+        await _sut.Handle(command, cts.Token);
 
         _matchRepositoryMock.Verify(r => r.GetByIdAsync(matchId, cts.Token), Times.Once);
         _matchRepositoryMock.Verify(r => r.UpdateAsync(match, cts.Token), Times.Once);

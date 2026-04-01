@@ -22,7 +22,7 @@ public class GetLastMatchHandlerTests
     {
         _matchRepositoryMock.Setup(r => r.GetLastAsync(default)).ReturnsAsync((Match?)null);
 
-        var result = await _sut.HandleAsync();
+        var result = await _sut.Handle(new GetLastMatchQuery(), default);
 
         Assert.Null(result);
     }
@@ -42,7 +42,7 @@ public class GetLastMatchHandlerTests
 
         _matchRepositoryMock.Setup(r => r.GetLastAsync(default)).ReturnsAsync(match);
 
-        var result = await _sut.HandleAsync();
+        var result = await _sut.Handle(new GetLastMatchQuery(), default);
 
         Assert.NotNull(result);
         Assert.Equal(match.Id, result.Id);
@@ -72,7 +72,7 @@ public class GetLastMatchHandlerTests
 
         _matchRepositoryMock.Setup(r => r.GetLastAsync(default)).ReturnsAsync(match);
 
-        var result = await _sut.HandleAsync();
+        var result = await _sut.Handle(new GetLastMatchQuery(), default);
 
         Assert.NotNull(result);
         var moves = result.Moves.ToList();
@@ -95,7 +95,7 @@ public class GetLastMatchHandlerTests
 
         _matchRepositoryMock.Setup(r => r.GetLastAsync(default)).ReturnsAsync(match);
 
-        var result = await _sut.HandleAsync();
+        var result = await _sut.Handle(new GetLastMatchQuery(), default);
 
         Assert.NotNull(result);
         Assert.Empty(result.Moves);
@@ -108,7 +108,7 @@ public class GetLastMatchHandlerTests
 
         _matchRepositoryMock.Setup(r => r.GetLastAsync(cts.Token)).ReturnsAsync((Match?)null);
 
-        await _sut.HandleAsync(cts.Token);
+        await _sut.Handle(new GetLastMatchQuery(), cts.Token);
 
         _matchRepositoryMock.Verify(r => r.GetLastAsync(cts.Token), Times.Once);
     }

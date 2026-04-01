@@ -23,7 +23,7 @@ public class GetMatchHistoryHandlerTests
     {
         _matchRepositoryMock.Setup(r => r.GetAllAsync(default)).ReturnsAsync([]);
 
-        var result = await _sut.HandleAsync();
+        var result = await _sut.Handle(new GetMatchHistoryQuery(), default);
 
         Assert.Empty(result);
     }
@@ -37,7 +37,7 @@ public class GetMatchHistoryHandlerTests
         _matchRepositoryMock.Setup(r => r.GetAllAsync(default)).ReturnsAsync([match]);
         _moveRepositoryMock.Setup(r => r.GetByMatchIdAsync(matchId, default)).ReturnsAsync([]);
 
-        var result = (await _sut.HandleAsync()).ToList();
+        var result = (await _sut.Handle(new GetMatchHistoryQuery(), default)).ToList();
 
         Assert.Single(result);
         Assert.Equal(matchId, result[0].Id);
@@ -55,7 +55,7 @@ public class GetMatchHistoryHandlerTests
         _matchRepositoryMock.Setup(r => r.GetAllAsync(default)).ReturnsAsync([older, newer]);
         _moveRepositoryMock.Setup(r => r.GetByMatchIdAsync(It.IsAny<Guid>(), default)).ReturnsAsync([]);
 
-        var result = (await _sut.HandleAsync()).ToList();
+        var result = (await _sut.Handle(new GetMatchHistoryQuery(), default)).ToList();
 
         Assert.Equal(2, result.Count);
         Assert.Equal(newer.Id, result[0].Id);
@@ -76,7 +76,7 @@ public class GetMatchHistoryHandlerTests
         _matchRepositoryMock.Setup(r => r.GetAllAsync(default)).ReturnsAsync([match]);
         _moveRepositoryMock.Setup(r => r.GetByMatchIdAsync(matchId, default)).ReturnsAsync(moves);
 
-        var result = (await _sut.HandleAsync()).ToList();
+        var result = (await _sut.Handle(new GetMatchHistoryQuery(), default)).ToList();
 
         Assert.Single(result);
         Assert.Equal(2, result[0].Moves.Count());
@@ -93,7 +93,7 @@ public class GetMatchHistoryHandlerTests
         _matchRepositoryMock.Setup(r => r.GetAllAsync(default)).ReturnsAsync([match1, match2]);
         _moveRepositoryMock.Setup(r => r.GetByMatchIdAsync(It.IsAny<Guid>(), default)).ReturnsAsync([]);
 
-        await _sut.HandleAsync();
+        await _sut.Handle(new GetMatchHistoryQuery(), default);
 
         _moveRepositoryMock.Verify(r => r.GetByMatchIdAsync(matchId1, default), Times.Once);
         _moveRepositoryMock.Verify(r => r.GetByMatchIdAsync(matchId2, default), Times.Once);
@@ -109,7 +109,7 @@ public class GetMatchHistoryHandlerTests
         _matchRepositoryMock.Setup(r => r.GetAllAsync(cts.Token)).ReturnsAsync([match]);
         _moveRepositoryMock.Setup(r => r.GetByMatchIdAsync(matchId, cts.Token)).ReturnsAsync([]);
 
-        await _sut.HandleAsync(cts.Token);
+        await _sut.Handle(new GetMatchHistoryQuery(), cts.Token);
 
         _matchRepositoryMock.Verify(r => r.GetAllAsync(cts.Token), Times.Once);
         _moveRepositoryMock.Verify(r => r.GetByMatchIdAsync(matchId, cts.Token), Times.Once);

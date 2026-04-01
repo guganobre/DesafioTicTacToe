@@ -35,7 +35,7 @@ public class RegisterMoveHandlerTests
         _matchRepositoryMock.Setup(r => r.GetByIdAsync(matchId, default)).ReturnsAsync(match);
         _matchServiceMock.Setup(s => s.CreateMove(matchId, PlayerSymbol.X, 4, 1)).Returns(move);
 
-        var result = await _sut.HandleAsync(command);
+        var result = await _sut.Handle(command, default);
 
         Assert.Equal(move.Id, result.Id);
         Assert.Equal(PlayerSymbol.X, result.Player);
@@ -54,7 +54,7 @@ public class RegisterMoveHandlerTests
 
         _matchRepositoryMock.Setup(r => r.GetByIdAsync(matchId, default)).ReturnsAsync((Match?)null);
 
-        await Assert.ThrowsAsync<DomainException>(() => _sut.HandleAsync(command));
+        await Assert.ThrowsAsync<DomainException>(() => _sut.Handle(command, default));
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class RegisterMoveHandlerTests
         _matchRepositoryMock.Setup(r => r.GetByIdAsync(matchId, default)).ReturnsAsync(match);
         _matchServiceMock.Setup(s => s.CreateMove(matchId, PlayerSymbol.O, 3, 2)).Returns(move);
 
-        await _sut.HandleAsync(command);
+        await _sut.Handle(command, default);
 
         _matchServiceMock.Verify(s => s.CreateMove(matchId, PlayerSymbol.O, 3, 2), Times.Once);
     }
@@ -85,7 +85,7 @@ public class RegisterMoveHandlerTests
         _matchRepositoryMock.Setup(r => r.GetByIdAsync(matchId, cts.Token)).ReturnsAsync(match);
         _matchServiceMock.Setup(s => s.CreateMove(matchId, PlayerSymbol.X, 0, 1)).Returns(move);
 
-        await _sut.HandleAsync(command, cts.Token);
+        await _sut.Handle(command, cts.Token);
 
         _matchRepositoryMock.Verify(r => r.GetByIdAsync(matchId, cts.Token), Times.Once);
         _moveRepositoryMock.Verify(r => r.AddAsync(move, cts.Token), Times.Once);

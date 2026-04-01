@@ -1,12 +1,14 @@
 namespace TicTacToe.Application.UseCases.CreateMatch;
 
+using MediatR;
 using TicTacToe.Application.DTOs;
 using TicTacToe.Domain.Interfaces.Repositories;
 using TicTacToe.Domain.Interfaces.Services;
 
 public class CreateMatchHandler(IMatchRepository matchRepository, IMatchService matchService)
+    : IRequestHandler<CreateMatchCommand, MatchDto>
 {
-    public async Task<MatchDto> HandleAsync(CreateMatchCommand command, CancellationToken ct = default)
+    public async Task<MatchDto> Handle(CreateMatchCommand command, CancellationToken ct)
     {
         var match = matchService.Create(command.Player1Name, command.Player2Name);
 

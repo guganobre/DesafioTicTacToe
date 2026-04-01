@@ -1,3 +1,6 @@
 namespace TicTacToe.Application.UseCases.CreateMatch;
 
-public record CreateMatchCommand(string Player1Name, string Player2Name);
+using MediatR;
+using TicTacToe.Application.DTOs;
+
+public record CreateMatchCommand(string Player1Name, string Player2Name) : IRequest<MatchDto>;

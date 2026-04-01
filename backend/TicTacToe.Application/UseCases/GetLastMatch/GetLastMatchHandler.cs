@@ -1,11 +1,13 @@
 namespace TicTacToe.Application.UseCases.GetLastMatch;
 
+using MediatR;
 using TicTacToe.Application.DTOs;
 using TicTacToe.Domain.Interfaces.Repositories;
 
 public class GetLastMatchHandler(IMatchRepository matchRepository)
+    : IRequestHandler<GetLastMatchQuery, MatchDto?>
 {
-    public async Task<MatchDto?> HandleAsync(CancellationToken ct = default)
+    public async Task<MatchDto?> Handle(GetLastMatchQuery query, CancellationToken ct)
     {
         var match = await matchRepository.GetLastAsync(ct);
 

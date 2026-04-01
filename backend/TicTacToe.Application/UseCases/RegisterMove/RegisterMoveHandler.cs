@@ -1,5 +1,6 @@
 namespace TicTacToe.Application.UseCases.RegisterMove;
 
+using MediatR;
 using TicTacToe.Application.DTOs;
 using TicTacToe.Domain.Exceptions;
 using TicTacToe.Domain.Interfaces.Repositories;
@@ -9,8 +10,9 @@ public class RegisterMoveHandler(
     IMatchRepository matchRepository,
     IMoveRepository moveRepository,
     IMatchService matchService)
+    : IRequestHandler<RegisterMoveCommand, MoveDto>
 {
-    public async Task<MoveDto> HandleAsync(RegisterMoveCommand command, CancellationToken ct = default)
+    public async Task<MoveDto> Handle(RegisterMoveCommand command, CancellationToken ct)
     {
         var match = await matchRepository.GetByIdAsync(command.MatchId, ct)
             ?? throw new DomainException($"Partida {command.MatchId} não encontrada.");
