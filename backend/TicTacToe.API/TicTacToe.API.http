@@ -1,0 +1,42 @@
+@baseUrl = http://localhost:5203
+@matchId = 00000000-0000-0000-0000-000000000000
+
+### Criar partida
+POST {{baseUrl}}/api/matches
+Content-Type: application/json
+
+{
+  "player1Name": "Alice",
+  "player2Name": "Bob"
+}
+
+###
+
+### Listar histórico de partidas
+GET {{baseUrl}}/api/matches
+Accept: application/json
+
+###
+
+### Registrar jogada (Player: 0 = X, 1 = O | Position: 0-8)
+POST {{baseUrl}}/api/matches/{{matchId}}/moves
+Content-Type: application/json
+
+{
+  "matchId": "{{matchId}}",
+  "player": 0,
+  "position": 4,
+  "moveOrder": 1
+}
+
+###
+
+### Finalizar partida (board: array de 9 posições, null = vazio)
+PUT {{baseUrl}}/api/matches/{{matchId}}/finish
+Content-Type: application/json
+
+["X", null, null,
+ null, "X", null,
+ null, null, "X"]
+
+###

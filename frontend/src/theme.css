@@ -1,0 +1,35 @@
+:root {
+    /* Brand colors */
+    --x-color: #63b3ed;
+    --x-glow: rgba(99, 179, 237, 0.4);
+    --o-color: #fc814a;
+    --o-glow: rgba(252, 129, 74, 0.4);
+    --accent: #7c5cbf;
+    --accent-glow: rgba(124, 92, 191, 0.12);
+
+    /* Light theme */
+    --bg: #f8f7fc;
+    --card-bg: #ffffff;
+    --border: #e2e0ea;
+    --text: #2d2b38;
+    --text-heading: #111020;
+    --text-muted: #7a7590;
+    --input-bg: #f4f3f8;
+    --hover-bg: rgba(0, 0, 0, 0.04);
+    --error-color: #e53e3e;
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #13121a;
+        --card-bg: #1e1d28;
+        --border: #2e2c3d;
+        --text: #d4d0e8;
+        --text-heading: #f0eeff;
+        --text-muted: #7a7590;
+        --input-bg: #252333;
+        --hover-bg: rgba(255, 255, 255, 0.05);
+        --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    }
+}
