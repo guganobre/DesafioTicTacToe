@@ -69,7 +69,7 @@ backend/
 
 2. **Suba todos os serviços:**
    ```bash
-   docker compose up --build
+   docker compose up -d --build
    ```
    > Na primeira execução, o Docker irá baixar as imagens base e construir os containers. As migrações do banco de dados são aplicadas automaticamente na inicialização da API.
 
